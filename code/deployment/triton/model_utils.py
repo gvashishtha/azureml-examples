@@ -7,7 +7,7 @@ import urllib
 from azure.storage.blob import BlobClient
 
 
-model_names = ["densenet_onnx", "bidaf-9"]
+model_names = ["densenet_onnx", "bidaf-9", "keiji_model"]
 
 
 def download_triton_models(prefix):
