@@ -1,61 +1,35 @@
 # imports
+import os
 import json
 import glob
+import argparse
+
+# setup argparse
+parser = argparse.ArgumentParser()
+args = parser.parse_args()
 
 # constants, variables, parameters, etc.
-prefix = """# Azure Machine Learning (AML) Examples
-
-[![run-notebooks-badge](https://github.com/Azure/azureml-examples/workflows/run-notebooks/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-notebooks)
-[![cleanup](https://github.com/Azure/azureml-examples/workflows/cleanup/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acleanup)
-[![code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![license: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](LICENSE)
-[![repo size](https://img.shields.io/github/repo-size/Azure/azureml-examples)](https://github.com/Azure/azureml-examples)
-
-Welcome to the AML examples!
-
-## Installation
-
-Clone this repository and install required packages:
-
-```sh
-git clone https://github.com/Azure/azureml-examples
-cd azureml-examples
-pip install -r requirements.txt
-```
-
-To create or setup a workspace with the assets used in these examples, run the [setup notebook](setup.ipynb).
-
-## Notebooks
-
-The main example notebooks are located in the [notebooks directory](notebooks). Notebooks overviewing the Python SDK for key concepts in AML can be found in the [concepts directory](concepts). End to end tutorials can be found in the [tutorials directory](tutorials).
-"""
+with open("docs/data/prefix.data", "r") as f:
+    prefix = f.read()
+with open("docs/data/suffix.data", "r") as f:
+    suffix = f.read()
 
 training_table = """
 **Training examples**
-path|compute|framework(s)|dataset|environment|distribution|other
--|-|-|-|-|-|-
+path|compute|environment|description
+-|-|-|-
 """
 
 deployment_table = """
 **Deployment examples**
-path|compute|framework(s)|other
--|-|-|-
+path|compute|description
+-|-|-
 """
 
 concepts_table = """
 **Concepts examples**
-path|area|other
+path|area|description
 -|-|-
-"""
-
-suffix = """
-## Contributing
-
-We welcome contributions and suggestions! Please see the [contributing guidelines](CONTRIBUTING.md) for details.
-
-## Code of Conduct 
-
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). Please see the [code of conduct](CODE_OF_CONDUCT.md) for details. 
 """
 
 ws = "default"
@@ -63,12 +37,24 @@ rg = "azureml-examples"
 nb = "${{matrix.notebook}}"
 cr = "${{secrets.AZ_AE_CREDS}}"
 
+kernelspec = {"display_name": "Python 3.8", "language": "python", "name": "python3.8"}
+
 # get list of notebooks
-nbs = [nb for nb in glob.glob("*/**/*.ipynb", recursive=True)]  # if "deploy" not in nb]
+nbs = [
+    nb
+    for nb in glob.glob("*/**/*.ipynb", recursive=True)
+    if "concepts" in nb or "notebooks" in nb  # and "mlproject" not in nb
+]
 
 # create workflow yaml file
 workflow = f"""name: run-notebooks
-on: [push]
+on:
+  push: 
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest 
@@ -85,7 +71,7 @@ jobs:
     - name: check code format
       run: black --check .
     - name: check notebook format
-      run: black-nb --check .
+      run: black-nb --clear-output --check .
     - name: azure login
       uses: azure/login@v1
       with:
@@ -104,48 +90,74 @@ with open(f".github/workflows/run-notebooks.yml", "w") as f:
 
 # create README.md file
 for nb in nbs:
-    print()
-    print(nb)
 
-    name = nb.split("/")[-1].split(".")[0]
-
+    # read in notebook
     with open(nb, "r") as f:
         data = json.load(f)
 
-    index_data = data["metadata"]["index"]
+    # update metadata
+    data["metadata"]["kernelspec"] = kernelspec
 
-    if "concepts" in nb:
+    # write notebook
+    with open(nb, "w") as f:
+        json.dump(data, f, indent=2)
 
+    # read in the description
+    if "description: " in str(data["cells"][0]["source"]):
+        desc = (
+            str(data["cells"][0]["source"])
+            .split("description: ")[-1]
+            .replace("']", "")
+            .strip()
+        )
+    else:
+        desc = "*no description*"
+
+    # build tables
+    if "train" in nb:
+        if "cpu-cluster" in str(data):
+            compute = "AML - CPU"
+        elif (
+            "gpu-cluster" in str(data)
+            or "gpu-K80" in str(data)
+            or "gpu-V100" in str(data)
+        ):
+            compute = "AML - GPU"
+        else:
+            compute = "unknown"
+        if "Environment.from_pip_requirements" in str(data):
+            environment = "pip"
+        elif "Environment.from_conda_specification" in str(data):
+            environment = "conda"
+        elif "env.docker.base_dockerfile" in str(data):
+            environment = "docker"
+        elif "mlproject" in nb:
+            environment = "mlproject"
+        else:
+            environment = "unknown"
+
+        training_table += f"[{nb}]({nb})|{compute}|{environment}|{desc}\n"
+    elif "deploy" in nb:
+        if "aks-cpu-deploy" in str(data):
+            compute = "AKS - CPU"
+        elif "aks-gpu-deploy" in str(data):
+            compute = "AKS - GPU"
+        elif "local" in nb:
+            compute = "local"
+        else:
+            compute = "unknown"
+
+        deployment_table += f"[{nb}]({nb})|{compute}|{desc}\n"
+    elif "concepts" in nb:
         area = nb.split("/")[-2]
-        other = index_data["other"]
+        concepts_table += f"[{nb}]({nb})|{area}|{desc}\n"
 
-        row = f"[{nb}]({nb})|{area}|{other}\n"
-        concepts_table += row
-
-    elif "notebooks" in nb:
-
-        scenario = index_data["scenario"]
-        if scenario == "training":
-
-            compute = index_data["compute"]
-            frameworks = index_data["frameworks"]
-            dataset = index_data["dataset"]
-            environment = index_data["environment"]
-            distribution = index_data["distribution"]
-            other = index_data["other"]
-
-            row = f"[{nb}]({nb})|{compute}|{frameworks}|{dataset}|{environment}|{distribution}|{other}\n"
-            training_table += row
-
-        elif scenario == "deployment":
-
-            compute = index_data["compute"]
-            frameworks = index_data["frameworks"]
-            other = index_data["other"]
-
-            row = f"[{nb}]({nb})|{compute}|{frameworks}|{other}\n"
-            deployment_table += row
-
-print("writing readme file...")
+print("writing README.md...")
 with open("README.md", "w") as f:
     f.write(prefix + training_table + deployment_table + concepts_table + suffix)
+
+# run code formatter on .py files
+os.system("black .")
+
+# run code formatter on .ipynb files
+os.system("black-nb --clear-output .")

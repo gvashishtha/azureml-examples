@@ -1,6 +1,11 @@
+import argparse
 from azureml.core import Workspace
 
-ws = Workspace.from_config()
+parser = argparse.ArgumentParser()
+parser.add_argument("--config", type=str, default="")
+args = parser.parse_args()
+
+ws = Workspace.from_config(args.config)
 
 for webservice in ws.webservices:
     ws.webservices[webservice].delete()
