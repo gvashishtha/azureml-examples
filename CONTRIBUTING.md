@@ -28,7 +28,9 @@ PRs to this repo are subject to review by the Azure ML team.
 
 To ensure all checks are passed:
 
-* run `python readme.py` from the root of the repo to generate the README.md, workflow files, and run formatting
+* run `python readme.py` from the root of the repo to generate the README.md and workflow files
+* run `black .` from the root of the repo to format the code
+* run `black-nb --clear-output .` from the root of the repo to format the notebooks
 
 ### Organization
 

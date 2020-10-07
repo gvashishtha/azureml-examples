@@ -1,5 +1,4 @@
 # imports
-import os
 import json
 import glob
 import argparse
@@ -43,18 +42,12 @@ kernelspec = {"display_name": "Python 3.8", "language": "python", "name": "pytho
 nbs = [
     nb
     for nb in glob.glob("*/**/*.ipynb", recursive=True)
-    if "concepts" in nb or "notebooks" in nb  # and "mlproject" not in nb
+    if "concepts" in nb or "notebooks" in nb
 ]
 
 # create workflow yaml file
 workflow = f"""name: run-notebooks
-on:
-  push: 
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest 
@@ -117,14 +110,10 @@ for nb in nbs:
     if "train" in nb:
         if "cpu-cluster" in str(data):
             compute = "AML - CPU"
-        elif (
-            "gpu-cluster" in str(data)
-            or "gpu-K80" in str(data)
-            or "gpu-V100" in str(data)
-        ):
+        elif "gpu-cluster" in str(data):
             compute = "AML - GPU"
         else:
-            compute = "unknown"
+            compute = "Unknown"
         if "Environment.from_pip_requirements" in str(data):
             environment = "pip"
         elif "Environment.from_conda_specification" in str(data):
@@ -155,9 +144,3 @@ for nb in nbs:
 print("writing README.md...")
 with open("README.md", "w") as f:
     f.write(prefix + training_table + deployment_table + concepts_table + suffix)
-
-# run code formatter on .py files
-os.system("black .")
-
-# run code formatter on .ipynb files
-os.system("black-nb --clear-output .")
