@@ -1,11 +1,29 @@
 name: run-notebooks
+<<<<<<< HEAD
 on: [push]
+=======
+on:
+  push: 
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+>>>>>>> dc6192b4a38c915e9f8c9ec69b6bfcc1049fe72c
 jobs:
   build:
     runs-on: ubuntu-latest 
     strategy:
       matrix:
+<<<<<<< HEAD
+<<<<<<< HEAD
+        notebook: ['concepts/dataset/dataset-api.ipynb', 'concepts/workspace/workspace-api.ipynb', 'concepts/datastore/datastore-api.ipynb', 'concepts/compute/compute-instance-api.ipynb', 'concepts/compute/azureml-compute-api.ipynb', 'concepts/model/model-api.ipynb', 'concepts/environment/environment-api.ipynb', 'notebooks/xgboost/train-iris.ipynb', 'notebooks/triton/deploy-densenet-local.ipynb', 'notebooks/triton/deploy-bidaf-aks.ipynb', 'notebooks/sklearn/train-diabetes-ridge.ipynb', 'notebooks/sklearn/deploy-diabetes.ipynb', 'notebooks/sklearn/train-diabetes-mlproject.ipynb', 'notebooks/fastai/train-mnist-resnet18.ipynb', 'notebooks/fastai/train-mnist-mlproject.ipynb', 'notebooks/fastai/train-pets-resnet34.ipynb', 'notebooks/tensorflow/train-mnist-nn.ipynb', 'notebooks/tensorflow/train-mnist-distributed-horovod.ipynb', 'notebooks/tensorflow/train-mnist-distributed.ipynb', 'notebooks/tensorflow/train-iris-nn.ipynb', 'notebooks/lightgbm/train-iris.ipynb', 'notebooks/pytorch/train-mnist-cnn.ipynb', 'notebooks/pytorch/train-mnist-mlproject.ipynb', 'notebooks/pytorch/deploy-mnist.ipynb']
+=======
         notebook: ['concepts/dataset/dataset-api.ipynb', 'concepts/workspace/workspace-api.ipynb', 'concepts/datastore/datastore-api.ipynb', 'concepts/compute/compute-instance-api.ipynb', 'concepts/compute/azureml-compute-api.ipynb', 'concepts/model/model-api.ipynb', 'concepts/environment/environment-api.ipynb', 'notebooks/rapids/train-airlines.ipynb', 'notebooks/rapids/train-airlines-hyperdrive.ipynb', 'notebooks/rapids/train-airlines-multi.ipynb', 'notebooks/xgboost/train-iris.ipynb', 'notebooks/triton/deploy-densenet-local.ipynb', 'notebooks/triton/deploy-bidaf-aks.ipynb', 'notebooks/sklearn/train-diabetes-ridge.ipynb', 'notebooks/sklearn/deploy-diabetes.ipynb', 'notebooks/sklearn/train-diabetes-mlproject.ipynb', 'notebooks/fastai/train-mnist-resnet18.ipynb', 'notebooks/fastai/train-mnist-mlproject.ipynb', 'notebooks/fastai/train-pets-resnet34.ipynb', 'notebooks/tensorflow/train-mnist-nn.ipynb', 'notebooks/tensorflow/train-mnist-distributed-horovod.ipynb', 'notebooks/tensorflow/train-mnist-distributed.ipynb', 'notebooks/tensorflow/train-iris-nn.ipynb', 'notebooks/lightgbm/train-iris.ipynb', 'notebooks/pytorch/train-mnist-cnn.ipynb', 'notebooks/pytorch/train-mnist-mlproject.ipynb', 'notebooks/pytorch/deploy-mnist.ipynb']
+>>>>>>> dc6192b4a38c915e9f8c9ec69b6bfcc1049fe72c
+=======
+        notebook: ['concepts/dataset/dataset-api.ipynb', 'concepts/workspace/workspace-api.ipynb', 'concepts/datastore/datastore-api.ipynb', 'concepts/compute/compute-instance-api.ipynb', 'concepts/compute/azureml-compute-api.ipynb', 'concepts/model/model-api.ipynb', 'concepts/environment/environment-api.ipynb', 'notebooks/rapids/train-airlines.ipynb', 'notebooks/rapids/train-airlines-hyperdrive.ipynb', 'notebooks/rapids/train-airlines-multi.ipynb', 'notebooks/xgboost/train-iris.ipynb', 'notebooks/triton/deploy-densenet-local.ipynb', 'notebooks/triton/deploy-bidaf-aks.ipynb', 'notebooks/sklearn/train-diabetes-ridge.ipynb', 'notebooks/sklearn/deploy-diabetes.ipynb', 'notebooks/sklearn/train-diabetes-mlproject.ipynb', 'notebooks/fastai/train-mnist-resnet18.ipynb', 'notebooks/fastai/train-mnist-mlproject.ipynb', 'notebooks/fastai/train-pets-resnet34.ipynb', 'notebooks/tensorflow/train-mnist-nn.ipynb', 'notebooks/tensorflow/train-mnist-distributed-horovod.ipynb', 'notebooks/tensorflow/train-mnist-distributed.ipynb', 'notebooks/tensorflow/train-iris-nn.ipynb', 'notebooks/lightgbm/train-iris.ipynb', 'notebooks/pytorch/train-mnist-cnn.ipynb', 'notebooks/pytorch/train-mnist-mlproject.ipynb', 'notebooks/pytorch/deploy-mnist.ipynb']
+>>>>>>> 47fc53c2851381f60a1623b9084ddb2563a43dd4
     steps:
     - name: check out repo
       uses: actions/checkout@v2
@@ -16,7 +34,15 @@ jobs:
     - name: check code format
       run: black --check .
     - name: check notebook format
+<<<<<<< HEAD
+<<<<<<< HEAD
+      run: black-nb --check .
+=======
       run: black-nb --clear-output --check .
+>>>>>>> dc6192b4a38c915e9f8c9ec69b6bfcc1049fe72c
+=======
+      run: black-nb --clear-output --check .
+>>>>>>> 47fc53c2851381f60a1623b9084ddb2563a43dd4
     - name: azure login
       uses: azure/login@v1
       with:
