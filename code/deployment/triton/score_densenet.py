@@ -9,7 +9,7 @@ from utils import get_model_info, parse_model_http, triton_init, triton_infer
 from onnxruntimetriton import InferenceSession
 
 
-def preprocess(img, scaling, dtype):
+def preprocess(img, scaling): #, dtype):
     """Pre-process an image to meet the size, type and format
     requirements specified by the parameters.
     """
@@ -29,9 +29,9 @@ def preprocess(img, scaling, dtype):
         resized = resized[:, :, np.newaxis]
 
     #npdtype = triton_to_np_dtype(dtype)
-    #typed = resized.astype(npdtype)
-    typed = resized
-    
+    typed = resized.astype(np.float32)
+    #typed = resized
+
     if scaling == "INCEPTION":
         scaled = (typed / 128) - 1
     elif scaling == "VGG":
@@ -51,6 +51,8 @@ def preprocess(img, scaling, dtype):
     # Channels are in RGB order. Currently model configuration data
     # doesn't provide any information as to other channel orderings
     # (like BGR) so we just assume RGB.
+
+    print(f"returning ordered with type {type(ordered)}")
     return ordered
 
 
@@ -104,7 +106,9 @@ def run(request):
         img = Image.open(io.BytesIO(reqBody))
         image_data = preprocess(img, scaling="INCEPTION")
 
-        res = session.run(outputs, {input_name: img})
+        print(f'type is {type(img)}')
+
+        res = session.run(outputs, {input_name: image_data})
 
         result = postprocess(
             results=res, output_name=output_name, batch_size=1, batching=False
