@@ -1,8 +1,15 @@
+<<<<<<< HEAD
 azureml-core>=1.13.0
 azureml-dataprep
 azureml-mlflow
 azureml-widgets
 azure-storage-blob
+=======
+azureml-core>=1.15.0
+azureml-dataprep
+azureml-mlflow
+azureml-widgets
+>>>>>>> 2b4678afbd065956b57d110fc17ba97e0b140624
 numpy
 pandas
 matplotlib
@@ -10,4 +17,7 @@ papermill
 gitpython
 black==19.10b0
 black-nb
+<<<<<<< HEAD
 https://aka.ms/triton/packages/tritonclientutils-2.1.0-py3-none-any.whl
+=======
+>>>>>>> 2b4678afbd065956b57d110fc17ba97e0b140624

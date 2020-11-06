@@ -4,6 +4,7 @@ about: Report an issue with Azure ML
 title: ''
 labels: 'azureml issue'
 assignees: ''
+<<<<<<< HEAD
 
 ---
 **Which package(s)?**
@@ -32,3 +33,22 @@ If applicable, add screenshots to help explain your problem.
 
 **Additional context**
 Add any other context about the problem here.
+=======
+---
+
+## Describe the issue
+
+description:
+
+## Minimal example
+
+```python
+from azureml.core import Workspace
+
+ws = Workspace.from_config()
+```
+
+## Additional context
+
+-
+>>>>>>> 2b4678afbd065956b57d110fc17ba97e0b140624

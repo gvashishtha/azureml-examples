@@ -10,6 +10,11 @@ jobs:
       uses: actions/checkout@v2
     - name: setup python
       uses: actions/setup-python@v2
+<<<<<<< HEAD
+=======
+      with:
+        python-version: "3.8"
+>>>>>>> 2b4678afbd065956b57d110fc17ba97e0b140624
     - name: pip install
       run: pip install -r requirements.txt
     - name: azure login
@@ -17,7 +22,11 @@ jobs:
       with:
         creds: ${{secrets.AZ_AE_CREDS}}
     - name: install azmlcli
+<<<<<<< HEAD
       run: az extension add -n azure-cli-ml
+=======
+      run: az extension add -s https://azurecliext.blob.core.windows.net/release/azure_cli_ml-1.15.0-py3-none-any.whl -y
+>>>>>>> 2b4678afbd065956b57d110fc17ba97e0b140624
     - name: attach to workspace
       run: az ml folder attach -w default -g azureml-examples
     - name: run cleanup script

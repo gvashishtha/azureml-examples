@@ -1,3 +1,20 @@
+<<<<<<< HEAD
+=======
+# other
+*.amlignore
+*.azureml
+pythonenv*
+*dask-worker-space*
+*tmp*
+*mlruns*
+*portforward_out_log.txt*
+*.vscode
+*catboost_info*
+*.pkl
+*.mag
+*.ckpt*
+
+>>>>>>> 2b4678afbd065956b57d110fc17ba97e0b140624
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
