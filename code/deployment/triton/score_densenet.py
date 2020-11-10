@@ -1,7 +1,8 @@
-import numpy as np
-
 import io
+import numpy as np
+import os
 
+from azureml.core import Model
 from azureml.contrib.services.aml_request import rawhttp
 from azureml.contrib.services.aml_response import AMLResponse
 from PIL import Image
@@ -56,33 +57,29 @@ def preprocess(img, scaling): #, dtype):
     return ordered
 
 
-def postprocess(results, output_name, batch_size, batching):
+def postprocess(output_array):
     """Post-process results to show the predicted label."""
 
-    output_array = results.as_numpy(output_name)
-    if len(output_array) != batch_size:
-        raise Exception(
-            "expected {} results, got {}".format(batch_size, len(output_array))
-        )
-
-    # Include special handling for non-batching models
-    output = ""
-    for results in output_array:
-        if not batching:
-            results = [results]
-        for result in results:
-            if output_array.dtype.type == np.bytes_:
-                cls = "".join(chr(x) for x in result).split(":")
-            else:
-                cls = result.split(":")
-            output += "    {} ({}) = {}".format(cls[0], cls[1], cls[2])
-
-    return output
+    output_array = output_array[0]
+    print(f'shape of output arrays is {output_array.shape}')
+    print(f'np argmax is {np.argmax(output_array)}')
+    max_label = np.argmax(output_array)
+    final_label = label_dict[max_label]
+    return f'{max_label} : {final_label}'
 
 
 def init():
-    global session
+    global session, label_dict
     session = InferenceSession(path_or_bytes='densenet_onnx')
+    model_dir = os.path.join(os.environ['AZUREML_MODEL_DIR'], 'models')
+    print(f'files found in model_dir {os.listdir(model_dir)}')
+    print(f' files found in triton dir {os.listdir(os.path.join(model_dir, "triton"))}')
+    folder_path = os.path.join(model_dir, 'triton', 'densenet_onnx')
+    print(f'files found in folder_path: {os.listdir(folder_path)}')
+    label_path = os.path.join(model_dir, 'triton', 'densenet_onnx', 'densenet_labels.txt')
+    label_file = open(label_path, 'r')
+    labels = label_file.read().split('\n')
+    label_dict = dict(enumerate(labels))
 
 
 @rawhttp
@@ -110,9 +107,9 @@ def run(request):
 
         res = session.run(outputs, {input_name: image_data})
 
-        result = postprocess(
-            results=res, output_name=output_name, batch_size=1, batching=False
-        )
+        print(f'len res is {len(res)}, shape [0] is {res[0].shape}')
+
+        result = postprocess(output_array=res)
 
         return AMLResponse(result, 200)
     else:

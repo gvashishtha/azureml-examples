@@ -1,4 +1,5 @@
 import tritonclient.http as tritonhttpclient
+import numpy as np
 
 class NodeArg():
     def __init__(self, name, shape):
@@ -34,6 +35,7 @@ class InferenceSession():
     def run(self, output_names, input_feed, run_options=None):
         inputs = []
         for key, val in input_feed.items():
+            val = np.expand_dims(val, axis=0)
             input = tritonhttpclient.InferInput(key, val.shape, self.dtype_mapping[key])
             input.set_data_from_numpy(val)
             inputs.append(input)
