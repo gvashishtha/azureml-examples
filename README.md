@@ -1,9 +1,6 @@
 # Azure Machine Learning (AML) Examples
 
-<<<<<<< HEAD
-=======
 [![run-workflows-badge](https://github.com/Azure/azureml-examples/workflows/run-workflows/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-workflows)
->>>>>>> 2b4678afbd065956b57d110fc17ba97e0b140624
 [![run-notebooks-badge](https://github.com/Azure/azureml-examples/workflows/run-notebooks/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Arun-notebooks)
 [![cleanup](https://github.com/Azure/azureml-examples/workflows/cleanup/badge.svg)](https://github.com/Azure/azureml-examples/actions?query=workflow%3Acleanup)
 [![code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
@@ -19,11 +16,15 @@ Welcome to the Azure Machine Learning (AML) examples repository!
 ## Prerequisites
 
 1. An Azure subscription. If you don't have an Azure subscription, [create a free account](https://aka.ms/AMLFree) before you begin.
+<<<<<<< HEAD
 2. Familiarity with Python and [Azure Machine Learning concepts](https://docs.microsoft.com/en-us/azure/machine-learning/concept-azure-machine-learning-architecture).
 3. A terminal and Python >=3.6,[\<3.9](https://pypi.org/project/azureml-core).
 >>>>>>> 2b4678afbd065956b57d110fc17ba97e0b140624
+=======
+2. A terminal and Python >=3.6,[\<3.9](https://pypi.org/project/azureml-core).
+>>>>>>> b5b0a84fd46932a7ed109e2a257eb8b68d628c1c
 
-## Installation
+## Setup
 
 Clone this repository and install required packages:
 
@@ -92,7 +93,7 @@ To create or setup a workspace with the assets used in these examples, run the [
 
 ## Contents
 
-This example repo is structured for real ML projects, with modifications specific to showing examples. You can use the [official GitHub template](https://github.com/Azure/azureml-template) to schedule your own ML workflow(s).
+A lightweight template repository for automating the ML lifecycle can be found [here](https://github.com/Azure/azureml-template).
 
 |directory|description|
 |-|-|
@@ -126,7 +127,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). Please see the [code of conduct](CODE_OF_CONDUCT.md) for details.
 
-## Index of Examples
+## Examples
 
 **Tutorials**
 path|status|notebooks|description
@@ -173,7 +174,11 @@ path|compute|description
 
 ## Reference
 
+- [GitHub Template](https://github.com/Azure/azureml-template)
 - [Azure Machine Learning Documentation](https://docs.microsoft.com/azure/machine-learning)
+<<<<<<< HEAD
 - [Python SDK Documentation](https://docs.microsoft.com/python/api/overview/azure/ml/?view=azure-ml-py)
 - [Azure Machine Learning Pipelines Notebooks](https://github.com/Azure/MachineLearningNotebooks/tree/master/how-to-use-azureml/machine-learning-pipelines)
 >>>>>>> 2b4678afbd065956b57d110fc17ba97e0b140624
+=======
+>>>>>>> b5b0a84fd46932a7ed109e2a257eb8b68d628c1c

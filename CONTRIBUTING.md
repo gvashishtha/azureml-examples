@@ -1,10 +1,7 @@
 # Contributing
 
-<<<<<<< HEAD
-=======
 ## Contributor License Agreement
 
->>>>>>> 2b4678afbd065956b57d110fc17ba97e0b140624
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
 the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
@@ -13,56 +10,17 @@ When you submit a pull request, a CLA bot will automatically determine whether y
 a CLA and decorate the PR appropriately (e.g., status check, comment). Simply follow the instructions
 provided by the bot. You will only need to do this once across all repos using our CLA.
 
-<<<<<<< HEAD
-=======
 ## Code of Conduct
 
->>>>>>> 2b4678afbd065956b57d110fc17ba97e0b140624
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
-<<<<<<< HEAD
-## Guidelines
-
-PRs to this repo are subject to review by the Azure ML team.
-
-### Rules
-
-* minimal prose
-* minimalist code
-* no azureml-* code in training scripts
-* notebooks can be re-run without failing in less than 10 minutes
-* if adding new requirements, pip install time must remain <60s
-
-### Checks
-
-To ensure all checks are passed:
-
-* run `python readme.py` from the root of the repo to generate the README.md and workflow files
-* run `black .` from the root of the repo to format the code
-* run `black-nb --clear-output .` from the root of the repo to format the notebooks
-
-### Organization
-
-* `notebooks` is for general example notebooks using AML
-* `tutorials` is for end to end tutorials using AML
-* `concepts` is for API example notebooks of core AML concepts
-
-### Naming conventions
-
-Naming conventions are still under consideration. For notebooks under `notebooks`, the notebook filename must start with "train" or "deploy".
-
-### Testing
-
-* `run-notebooks` runs on every push and runs all notebooks under `notebooks` and `concepts`
-* `cleanup` runs daily and cleans up AML resources for the testing workspace
-=======
 ## Principle
 
 There should be one - and preferably only one - [obvious](https://pep20.org/#obvious) way to do it.
 
-## Spirit of azureml-examples
+## Spirit
 
 Per the above principle, this repo is an opinionated set of examples using a subset of Azure Machine Learning. This entails:
 
@@ -166,7 +124,7 @@ Some examples of this include:
 - Exploratory Data Analysis (EDA) and Exploratory Data Science (EDS)
 - iterative experimentation with cloud tracking
 
-Anything else should likely be a regular example.
+Anything else should likely be a workflow.
 
 #### Workflows
 
@@ -202,7 +160,7 @@ Checklist:
 
 #### Adding a new tutorial
 
-Tutorials must include frequent automated testing through GitHub Actions. One time setup for Azure resources and anything else a user needs must be written in the `README.md`. An AML team member with access to the testing resource group will follow the `README.md` to perform the required setup, and then rerun your tutorial workflow which should now pass.
+Tutorials must include frequent automated testing through GitHub Actions. One time setup for Azure resources and anything else a user needs must be written in the `README.md` - it is encouraged to have an accompanying `setup.sh` or similar. An AML team member with access to the testing resource group will follow the `README.md` to perform the required setup, and then rerun your tutorial workflow which should now pass.
 
 Checklist:
 
@@ -213,4 +171,3 @@ Checklist:
 - [ ] run `readme.py`
 - [ ] test
 - [ ] submit PR, which will run your tutorial if setup properly
->>>>>>> 2b4678afbd065956b57d110fc17ba97e0b140624
